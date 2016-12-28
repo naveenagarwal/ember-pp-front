@@ -4,6 +4,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'pp-front',
     environment: environment,
+    contentSecurityPolicy: { 'connect-src': "'self' http://10.10.0.99:3000" },
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
