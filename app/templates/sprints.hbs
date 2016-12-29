@@ -3,7 +3,7 @@ List sprints
   {{#each model as |s|}}
     <li>
 
-        {{s.name}}
+      {{#link-to 'sprints.show' s.id }} {{s.id}} {{s.name}} {{/link-to}}
 
     </li>
   {{/each}}

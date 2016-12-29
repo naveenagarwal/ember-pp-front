@@ -8,7 +8,9 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('home');
-  this.route('sprints');
+  this.route('sprints',{ resetNamespace: true }, function() {
+    this.route('show', {path: '/:sprint_id'});
+  });
 });
 
 export default Router;
