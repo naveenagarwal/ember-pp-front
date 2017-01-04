@@ -22,6 +22,25 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
+      {{#if userEmail}}
+        <div class="has-success"><span class="help-block">Welcome {{userName}}!</span></div>
+      {{else}}
+        <form class="navbar-form navbar-left" role="login" {{action "login" on="submit"}}>
+          <div class="form-group">
+            <label> Email : </label>
+            {{input value=email name="email" type="text" placeholder="email@example.com" class="form-control"}}
+
+          </div>
+          <button type="submit" class="btn btn-default">Login</button>
+          {{#if loginFailed}}
+            <div class="has-error">
+              <span class="help-block">Login Failed. Try again!!!</span>
+            </div>
+          {{/if}}
+        </form>
+      {{/if}}
+
+
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
         <li class="dropdown">
