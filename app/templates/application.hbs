@@ -22,8 +22,9 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
-      {{#if userEmail}}
+      {{#if userName }}
         <div class="has-success"><span class="help-block">Welcome {{userName}}!</span></div>
+        <button {{action "logout"}} class="btn btn-warning"> Logout </button>
       {{else}}
         <form class="navbar-form navbar-left" role="login" {{action "login" on="submit"}}>
           <div class="form-group">
@@ -33,7 +34,7 @@
           </div>
           <button type="submit" class="btn btn-default">Login</button>
           {{#if loginFailed}}
-            <div class="has-error">
+            <div class="has-error pull-right">
               <span class="help-block">Login Failed. Try again!!!</span>
             </div>
           {{/if}}

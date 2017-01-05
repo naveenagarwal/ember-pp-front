@@ -1,32 +1,44 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  session: Ember.inject.service("login-user"),
+  init() {
+    this.isLoggedIn();
+  },
+
+  isLoggedIn() {
+    if(!!Cookies.get("userEmail") && !!Cookies.get("userName")){
+      this.set("userName", Cookies.get("userName"));
+      this.set("userEmail", Cookies.get("userEmail"));
+      this.set("loggedIn", true);
+      this.set("loginFailed", false);
+      return true;
+    }else{
+      this.set("userName", null);
+      this.set("userEmail", null);
+      this.set("loggedIn", false);
+      this.set("loginFailed", null);
+      return false;
+    }
+  },
+
   actions: {
-    login: function() {
-        this.set("userName", null);
-        this.set("userEmail", null);
-        this.set("loggedIn", false);
-        this.set("loginFailed", false);
-
-        var that= this;
-
-        $.post("http://localhost:4000/login",{
-          email: this.get("email")
-        }).then(function(data) {
-          if(data.success == false){
-            that.set("loginFailed", true);
-            that.set("loggedIn", false);
-          }else{
-            that.set("userEmail", data.email);
-            that.set("userName", data.name);
-            that.set("loggedIn", true);
-            that.set("loginFailed", false);
-          }
-        }, function() {
-          that.set("loginFailed", true);
-          that.set("loggedIn", false);
-        }.bind(this));
+    login() {
+      var params = {
+        email: this.get("email")
       }
+      this.get('session').login(params, this);
+    },
+
+    logout() {
+      this.set("userName", null);
+      this.set("userEmail", null);
+      this.set("loggedIn", false);
+      this.set("loginFailed", null);
+      this.set("email", "");
+      Cookies.remove("userName");
+      Cookies.remove("userEmail");
+    }
 
   }
 

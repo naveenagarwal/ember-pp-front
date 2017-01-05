@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('home');
   this.route('sprints',{ resetNamespace: true }, function() {
     this.route('show', {path: '/:sprint_id'});
+    this.route('story', {path: '/:sprint_id/story/:story_id'});
   });
 });
 

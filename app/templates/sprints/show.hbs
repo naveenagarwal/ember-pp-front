@@ -4,8 +4,13 @@
 <div class="list-group">
   {{#each model.stories as |story| }}
     <div class="list-group-item">
-      <h4> {{story.title}} </h4>
-      <p> {{story.description}} </p>
+      <h4> {{story.storyNo}} </h4>
+      <p>
+        {{story.title}}
+        {{#link-to "sprints.story" model.id story.id }}
+          <span class="pull-right">View</span>
+        {{/link-to}}
+      </p>
 
     </div>
   {{/each}}
