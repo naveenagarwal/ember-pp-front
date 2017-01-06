@@ -7,15 +7,18 @@ export default Ember.Controller.extend({
   },
 
   isLoggedIn() {
-    if(!!Cookies.get("userEmail") && !!Cookies.get("userName")){
+    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
       this.set("userName", Cookies.get("userName"));
       this.set("userEmail", Cookies.get("userEmail"));
+      this.set("userId", Cookies.get("userId"));
       this.set("loggedIn", true);
       this.set("loginFailed", false);
+      this.get('store').findRecord('user', Cookies.get("userId"));
       return true;
     }else{
       this.set("userName", null);
       this.set("userEmail", null);
+      this.set("userId", null);
       this.set("loggedIn", false);
       this.set("loginFailed", null);
       return false;
@@ -32,12 +35,14 @@ export default Ember.Controller.extend({
 
     logout() {
       this.set("userName", null);
+      this.set("userId", null);
       this.set("userEmail", null);
       this.set("loggedIn", false);
       this.set("loginFailed", null);
-      this.set("email", "");
+      this.set("email", null);
       Cookies.remove("userName");
       Cookies.remove("userEmail");
+      Cookies.remove("userId");
     }
 
   }

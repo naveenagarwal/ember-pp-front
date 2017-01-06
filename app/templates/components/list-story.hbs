@@ -1,0 +1,15 @@
+<div class="list-group-item">
+  <h4 class="text-muted" > {{story.storyNo}} </h4>
+  <p>
+    {{story.title}}
+
+    {{#if doneLoading}}
+      {{user-estimates-for-story showStoryId=story.id}}
+    {{/if}}
+
+    {{#link-to "sprints.story" story.sprint.id story.id}}
+      <span class="pull-right">View</span>
+    {{/link-to}}
+  </p>
+
+</div>

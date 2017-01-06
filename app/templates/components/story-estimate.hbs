@@ -1,7 +1,11 @@
-{{#if notEstimated }}
-  <form class="navbar-form navbar-left" role="estimate" {{action "estimate" on="submit"}}>
+{{#if estimateSubmitted }}
+  <p> You estimated : {{ userEstimate }} </p>
+{{ else }}
+  <form class="navbar-form navbar-left" role="estimate" {{action "submitEstimate" on="submit"}}>
     <div class="form-group">
+      {{ input type="hidden" value=storyId name="storyId" }}
       <label> Your Estimation : </label>
+
       <select class="form-control" onchange={{action "estimate" value="target.value"}}>
         <option value=""></option>
         <option value=1>1</option>
@@ -12,8 +16,6 @@
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
-{{ else }}
-  <p> You estimated : {{ userEstimate }} </p>
 {{/if}}
 
 {{yield}}

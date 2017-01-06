@@ -7,5 +7,5 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   sprint: DS.belongsTo('sprint'),
-  story_points: DS.hasMany('story-point')
+  storyPoints: DS.hasMany('story-point')
 });
