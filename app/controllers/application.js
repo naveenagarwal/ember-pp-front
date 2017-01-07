@@ -13,7 +13,8 @@ export default Ember.Controller.extend({
       this.set("userId", Cookies.get("userId"));
       this.set("loggedIn", true);
       this.set("loginFailed", false);
-      this.get('store').findRecord('user', Cookies.get("userId"));
+      // this.get('store').findRecord('user', Cookies.get("userId"));
+      this.get('store').queryRecord('user', { filter: { id: Cookies.get("userId"), relationships: false, single_record: true } });
       return true;
     }else{
       this.set("userName", null);

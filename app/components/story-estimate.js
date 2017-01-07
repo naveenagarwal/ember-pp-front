@@ -11,12 +11,13 @@ export default Ember.Component.extend({
 
     // check if user already submitted the estimates on page load
     // And sets the property to estimated value
+
     var that = this;
-    var story = this.get('store').peekRecord('story', this.get("storyId"))
+    var story = this.get('store').peekRecord('story', this.get("storyId"));
     story.get('storyPoints').then((storyPoints) => {
       storyPoints.map(function(storyPoint){
         storyPoint.get('user').then((user) => {
-          if(user.get("id") == Cookies.get("userId")){
+          if(user.get("id") === Cookies.get("userId")){
             that.set("estimateSubmitted", true);
             that.set("userEstimate", storyPoint.get("estimatedPoints"));
             return false;
@@ -42,26 +43,25 @@ export default Ember.Component.extend({
       var value = this.get("userEstimate");
       var storyId = this.get("storyId");
       var that = this;
-      console.log("Submitting : ", value, " For storyID", storyId);
 
       var story = this.get('store').peekRecord('story', storyId);
-      this.get('store').findRecord('user', Cookies.get("userId")).then(function(user){
-        var params =  {
-            story: story,
-            estimatedPoints: value,
-            user: user
-          };
-        var storyPoint = that.get('store').createRecord('story-point', params);
+      // this.get('store').findRecord('user', {id: Cookies.get("userId"), "story_id": storyId}).then(function(user){
+      var user = this.get('store').peekRecord('user', Cookies.get("userId"));
+      var params =  {
+          story: story,
+          estimatedPoints: value,
+          user: user
+        };
+      var storyPoint = that.get('store').createRecord('story-point', params);
 
+
+      storyPoint.save().then(function(data){
+        that.set("estimateSubmitted", true);
         story.get('storyPoints').pushObject(storyPoint);
-
-        storyPoint.save().then(function(data){
-          console.log('Data from api', data);
-          that.set("estimateSubmitted", true);
-          console.log('you sccessfully estimated');
-        });
-
+        user.get('storyPoints').pushObject(storyPoint);
       });
+
+      // });
     }
   }
 });

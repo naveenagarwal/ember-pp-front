@@ -14,10 +14,12 @@ export default Ember.Component.extend({
     story.get('storyPoints').then((storyPoints) => {
       storyPoints.map(function(storyPoint){
         storyPoint.get('user').then((user) => {
-          if(user.get("id") == Cookies.get("userId")){
+          if(user && user.get("id") === Cookies.get("userId")){
             that.set("userEstmatedthisStory", true);
             that.set("userEstimate", storyPoint.get("estimatedPoints"));
             return false;
+          }else {
+            console.log(storyPoint);
           }
         });
       });

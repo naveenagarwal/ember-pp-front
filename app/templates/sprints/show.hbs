@@ -2,8 +2,6 @@
 
 
 <div class="list-group">
-  {{#each model.stories as |story| }}
-    {{list-story story=story}}
-  {{/each}}
+  {{ show-stories stories=model.stories sprintId=model.id }}
 </div>
 
