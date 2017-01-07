@@ -5,6 +5,9 @@ export default Ember.Component.extend({
   store: Ember.inject.service(),
   estimateSubmitted: false,
   userEstimate : null,
+  otherEstimatesAvailable: false,
+  usersEstimates: [],
+  // test: [1,2,3],
 
   init() {
     this._super(...arguments);
@@ -26,11 +29,33 @@ export default Ember.Component.extend({
       });
     });
 
+
+    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
+      this.set("loggedIn", true);
+    }
+    // find others estimates
+    var that = this;
+    this.get('store').query('story-point', {filter: { story_id: this.get("storyId")} }).then((storyPoints) => {
+      var usersEstimates = [];
+      storyPoints.map(function (storyPoint) {
+        usersEstimates.push({
+          name: storyPoint.get("user").get("name"),
+          estimatedPoints: storyPoint.get("estimatedPoints")
+        });
+      });
+      that.set("usersEstimates", usersEstimates);
+      that.set("otherEstimatesAvailable", true);
+    });
+
   },
 
   actions: {
     estimate(value) {
-      console.log(value);
+      // var test = this.get("test");
+      // test.push(value);
+      // this.propertyWillChange("test");
+      // this.set("test", test);
+      // this.propertyDidChange("test");
       this.set("userEstimate", value);
     },
 
@@ -59,6 +84,18 @@ export default Ember.Component.extend({
         that.set("estimateSubmitted", true);
         story.get('storyPoints').pushObject(storyPoint);
         user.get('storyPoints').pushObject(storyPoint);
+
+        // this updates the list of estimations from other users
+        // on story page
+        that.propertyWillChange("usersEstimates");
+        var usersEstimates = that.get("usersEstimates");
+        usersEstimates.push({
+          name: user.get("name"),
+          estimatedPoints: value
+        });
+        that.set("usersEstimates", usersEstimates);
+        that.propertyDidChange("usersEstimates");
+
       });
 
       // });
