@@ -8,54 +8,49 @@ export default Ember.Component.extend({
   otherEstimatesAvailable: false,
   usersEstimates: [],
 
-  websockets: Ember.inject.service(),
+  socketIOService: Ember.inject.service('socket-io'),
   socketRef: null,
+  channel: null,
 
   didInsertElement() {
     this._super(...arguments);
 
     /*
-      2. The next step you need to do is to create your actual websocket. Calling socketFor
-      will retrieve a cached websocket if one exists or in this case it
-      will create a new one for us.
+      2. The next step you need to do is to create your actual socketIO.
     */
-    const socket = this.get('websockets').socketFor('ws://localhost:7000/');
+    const socket = this.get('socketIOService').socketFor('http://localhost:7000/');
 
     /*
-      3. The next step is to define your event handlers. All event handlers
-      are added via the `on` method and take 3 arguments: event name, callback
-      function, and the context in which to invoke the callback. All 3 arguments
-      are required.
+    * 3. Define any event handlers
     */
-    socket.on('open', this.myOpenHandler, this);
-    socket.on('message', this.myMessageHandler, this);
-    socket.on('close', this.myCloseHandler, this);
+    socket.on('connect', this.onConnect, this);
+    /*
+      4. It is also possible to set event handlers on specific events
+    */
+    // socket.on('myCustomNamespace', () => { socket.emit('anotherNamespace', 'some data'); });
+    this.set("channel", this.get("store").peekRecord("story", this.get("storyId")).get("storyNo"));
+    socket.on(this.get("channel"), this.onMessage, this );
+    this.set("socketRef", socket);
 
-    this.set('socketRef', socket);
+  },
+
+  onConnect() {
+    console.log("conencted");
   },
 
   willDestroyElement() {
     this._super(...arguments);
 
+    // const socket = this.get('socketIOService').socketFor('http://localhost:7000/');
     const socket = this.get('socketRef');
-
-    /*
-      4. The final step is to remove all of the listeners you have setup.
-    */
-    socket.off('open', this.myOpenHandler);
-    socket.off('message', this.myMessageHandler);
-    socket.off('close', this.myCloseHandler);
+    socket.off('connect', ()=>{console.log('disconnected'); });
+    socket.off('message', ()=>{console.log('disconnected'); });
+    socket.off(this.get("channel"), ()=>{console.log('disconnected'); });
   },
 
-  myOpenHandler(event) {
-      console.log(`On open event has been called: ${event}`);
-    },
-
-  myMessageHandler(event) {
-    console.log(`Message: ${event.data}`);
-    var data = JSON.parse(event.data);
-    console.log('data', data);
-    if(!!data.name && data.estimatedPoints){
+  onMessage(data) {
+    console.log('data from push server', data);
+    if(!!data.name && !!data.estimatedPoints){
 
       this.propertyWillChange("usersEstimates");
       var usersEstimates = this.get("usersEstimates");
@@ -66,26 +61,9 @@ export default Ember.Component.extend({
       this.set("usersEstimates", usersEstimates);
       this.propertyDidChange("usersEstimates");
 
-    }else{
-      console.log(event.data);
     }
 
   },
-
-  myCloseHandler(event) {
-    console.log(`On close event has been called: ${event}`);
-  },
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -119,7 +97,6 @@ export default Ember.Component.extend({
       this.set("loggedIn", true);
     }
     // find others estimates
-    var that = this;
     this.get('store').query('story-point', {filter: { story_id: this.get("storyId")} }).then((storyPoints) => {
       var usersEstimates = [];
       storyPoints.map(function (storyPoint) {
@@ -160,25 +137,15 @@ export default Ember.Component.extend({
       var storyPoint = that.get('store').createRecord('story-point', params);
 
 
-      storyPoint.save().then(function(data){
+      storyPoint.save().then(function(){
         that.set("estimateSubmitted", true);
         story.get('storyPoints').pushObject(storyPoint);
         user.get('storyPoints').pushObject(storyPoint);
 
         // this updates the list of estimations from other users
         // on story page
-        var socket = that.get("websockets").socketFor("ws://localhost:7000/");
-        socket.send({name: user.get("name"), estimatedPoints: value}, true);
-
-        // that.propertyWillChange("usersEstimates");
-        // var usersEstimates = that.get("usersEstimates");
-        // usersEstimates.push({
-        //   name: user.get("name"),
-        //   estimatedPoints: value
-        // });
-        // that.set("usersEstimates", usersEstimates);
-        // that.propertyDidChange("usersEstimates");
-
+        var socket = that.get("socketRef");
+        socket.send({channel: that.get("channel"), name: Cookies.get("userName"), estimatedPoints: value});
       });
 
       // });

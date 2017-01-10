@@ -1,5 +1,6 @@
 import Ember from 'ember';
-
+import DS from 'ember-data';
+console.log(DS);
 export default Ember.Service.extend({
   userName: null,
   userEmail: null,
