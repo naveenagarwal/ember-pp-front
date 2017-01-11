@@ -97,7 +97,8 @@ export default Ember.Component.extend({
       this.set("loggedIn", true);
     }
     // find others estimates
-    this.get('store').query('story-point', {filter: { story_id: this.get("storyId")} }).then((storyPoints) => {
+    // this.get('store').query('story-point', {filter: { story_id: this.get("storyId")} }).then((storyPoints) => {
+    story.get('storyPoints').then((storyPoints) => {
       var usersEstimates = [];
       storyPoints.map(function (storyPoint) {
         usersEstimates.push({
