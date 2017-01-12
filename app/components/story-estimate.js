@@ -14,7 +14,6 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-
     /*
       2. The next step you need to do is to create your actual socketIO.
     */
@@ -101,10 +100,19 @@ export default Ember.Component.extend({
     story.get('storyPoints').then((storyPoints) => {
       var usersEstimates = [];
       storyPoints.map(function (storyPoint) {
+
+        var value;
+        if(story.get("revealPoints")){
+          value = storyPoint.get("estimatedPoints");
+        }else{
+          value = "X";
+        }
+
         usersEstimates.push({
           name: storyPoint.get("user").get("name"),
-          estimatedPoints: storyPoint.get("estimatedPoints")
+          estimatedPoints: value
         });
+
       });
       that.set("usersEstimates", usersEstimates);
       that.set("otherEstimatesAvailable", true);
@@ -113,6 +121,39 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    revealPoints(id){
+      var that = this;
+      this.get("store").findRecord('story', id).then((story) => {
+        story.set("revealPoints", true);
+        story.save().then((story) => {
+          this.set("revealPoints", true);
+          console.log("revealing points");
+          story.get("storyPoints").then((storyPoints) => {
+            var usersEstimates = [];
+            storyPoints.map(function (storyPoint) {
+
+              var value;
+              if(story.get("revealPoints")){
+                value = storyPoint.get("estimatedPoints");
+              }else{
+                value = "X";
+              }
+
+              usersEstimates.push({
+                name: storyPoint.get("user").get("name"),
+                estimatedPoints: value
+              });
+
+            });
+            that.propertyWillChange("usersEstimates");
+            that.set("usersEstimates", usersEstimates);
+            that.set("otherEstimatesAvailable", true);
+            that.propertyDidChange("usersEstimates");
+          });
+        });
+      });
+    },
+
     estimate(value) {
       this.set("userEstimate", value);
     },
@@ -146,6 +187,9 @@ export default Ember.Component.extend({
         // this updates the list of estimations from other users
         // on story page
         var socket = that.get("socketRef");
+        if(!story.get("revealPoints")){
+          value = "X";
+        }
         socket.send({channel: that.get("channel"), name: Cookies.get("userName"), estimatedPoints: value});
       });
 
