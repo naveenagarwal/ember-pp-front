@@ -16,3 +16,18 @@ App = Ember.Application.extend({
 loadInitializers(App, config.modulePrefix);
 
 export default App;
+
+$(document).on('ajaxSend', function(e, request, options) {
+    $("div.body").hide();
+    if($('div.loader').length < 1){
+      $("<div class='loader'></div>").appendTo('body');
+    }
+})
+
+$(document).on('ajaxComplete', function(e, request, options) {
+    $("div.body").show();
+    if($('div.loader').length > 0){
+      $("div.loader").remove();
+    }
+})
+
