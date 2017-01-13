@@ -156,10 +156,9 @@ export default Ember.Component.extend({
             var socket = that.get("socketRef");
             socket.send({ channel: that.get("channel"), usersEstimates: usersEstimates, reload: true });
 
-            // that.propertyWillChange("usersEstimates");
-            // that.set("usersEstimates", usersEstimates);
-            // that.set("otherEstimatesAvailable", true);
-            // that.propertyDidChange("usersEstimates");
+            that.propertyWillChange("model");
+            that.get("model").set("revealPoints", true);
+            that.propertyDidChange("model");
           });
         });
       });
