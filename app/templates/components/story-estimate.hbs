@@ -4,7 +4,9 @@
     <p>
       {{ model.storyNo }}
       {{#unless model.revealPoints }}
-        <button class="btn btn-primary pull-right col-sm-1" {{action "revealPoints" model.id}} >Reveal</button>
+        {{#if organizer }}
+          <button class="btn btn-primary pull-right col-sm-1" {{action "revealPoints" model.id}} >Reveal</button>
+        {{/if}}
       {{/unless}}
     </p>
   </div>

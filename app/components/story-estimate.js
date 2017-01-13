@@ -7,6 +7,8 @@ export default Ember.Component.extend({
   userEstimate : null,
   otherEstimatesAvailable: false,
   usersEstimates: [],
+  organizer: false,
+  participant: false,
 
   socketIOService: Ember.inject.service('socket-io'),
   socketRef: null,
@@ -49,19 +51,22 @@ export default Ember.Component.extend({
 
   onMessage(data) {
     console.log('data from push server', data);
-    if(!!data.name && !!data.estimatedPoints){
+    if(!!data.name || !!data.estimatedPoints || !!data.usersEstimates){
+      var usersEstimates = [];
+      if(data.reload){
+        usersEstimates = data.usersEstimates;
+      }else{
+        usersEstimates = this.get("usersEstimates");
+        usersEstimates.push({
+          name: data.name,
+          estimatedPoints: data.estimatedPoints
+        });
+      }
 
       this.propertyWillChange("usersEstimates");
-      var usersEstimates = this.get("usersEstimates");
-      usersEstimates.push({
-        name: data.name,
-        estimatedPoints: data.estimatedPoints
-      });
       this.set("usersEstimates", usersEstimates);
       this.propertyDidChange("usersEstimates");
-
     }
-
   },
 
 
@@ -94,6 +99,9 @@ export default Ember.Component.extend({
 
     if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
       this.set("loggedIn", true);
+      var user = this.get('store').peekRecord("user", Cookies.get("userId"));
+      this.set("organizer", user.get("role") === "organizer");
+      this.set("participant", user.get("role") === "participant");
     }
     // find others estimates
     // this.get('store').query('story-point', {filter: { story_id: this.get("storyId")} }).then((storyPoints) => {
@@ -145,10 +153,13 @@ export default Ember.Component.extend({
               });
 
             });
-            that.propertyWillChange("usersEstimates");
-            that.set("usersEstimates", usersEstimates);
-            that.set("otherEstimatesAvailable", true);
-            that.propertyDidChange("usersEstimates");
+            var socket = that.get("socketRef");
+            socket.send({ channel: that.get("channel"), usersEstimates: usersEstimates, reload: true });
+
+            // that.propertyWillChange("usersEstimates");
+            // that.set("usersEstimates", usersEstimates);
+            // that.set("otherEstimatesAvailable", true);
+            // that.propertyDidChange("usersEstimates");
           });
         });
       });

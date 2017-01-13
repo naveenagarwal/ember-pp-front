@@ -11,7 +11,6 @@ export default DS.JSONAPISerializer.extend({
       delete json.data.attributes[key];
     }
 
-    for(key in json.data.relationships)
     return json;
   },
 });
