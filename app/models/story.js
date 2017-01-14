@@ -5,6 +5,8 @@ export default DS.Model.extend({
   storyNo: DS.attr('string'),
   description: DS.attr('string'),
   revealPoints: DS.attr('boolean'),
+  estimatedPoints: DS.attr('number'),
+  estimatedTime: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   sprint: DS.belongsTo('sprint'),

@@ -2,11 +2,13 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default Ember.Service.extend({
+  store: Ember.inject.service(),
   userName: null,
   userEmail: null,
   userId: null,
   loggedIn: false,
   loginFailed: null,
+  LoggedinUser: null,
 
   login(params, that) {
     if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
@@ -40,6 +42,22 @@ export default Ember.Service.extend({
       Cookies.remove("userId");
       return false;
     });
+  },
+
+  currentUser() {
+    if(!Cookies.get("userId")){
+      return null
+    }
+
+    var user = this.get("LoggedinUser");
+
+    if(!!user){
+      return user;
+    }else{
+      user = this.get('store').peekRecord('user', Cookies.get("userId"));
+      this.set("LoggedinUser", user);
+      return user;
+    }
   }
 
 });
