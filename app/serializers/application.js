@@ -8,7 +8,9 @@ export default DS.JSONAPISerializer.extend({
     for(key in json.data.attributes){
       newKey = key.replace("-", "_");
       json.data.attributes[newKey] = json.data.attributes[key];
-      delete json.data.attributes[key];
+      if( newKey !== key ){
+        delete json.data.attributes[key];
+      }
     }
 
     return json;

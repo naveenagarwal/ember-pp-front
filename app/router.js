@@ -8,12 +8,13 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('home');
-  this.route('sprints',{ resetNamespace: true }, function() {
+  this.route('sprints', { resetNamespace: true }, function() {
     this.route('show', {path: '/:sprint_id'});
     this.route('story', {path: '/:sprint_id/story/:story_id'});
   });
-  this.route('projects', function() {
+  this.route('projects', { resetNamespace: true }, function() {
     this.route('show', {path: '/:project_id' });
+    this.route('new-sprint', {path: '/:project_id/new-sprint' });
   });
 });
 

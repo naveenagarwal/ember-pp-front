@@ -37,6 +37,10 @@ body {
   margin: 0;
 }
 
+#story-details-list-group .list-group-item .first-col-lg-2 {
+  padding: 0px;
+}
+
 .sprint-back-button {
   bottom: 40px;
   padding: 0;

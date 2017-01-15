@@ -7,7 +7,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   name: DS.attr('string'),
   status: DS.attr('string'),
-  projectID: DS.attr('number'),
+  project: DS.belongsTo('project'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   stories: DS.hasMany('story')

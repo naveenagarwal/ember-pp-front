@@ -1,10 +1,16 @@
 <div class="list-group-item">
   <h4 class="text-muted" > {{story.storyNo}} </h4>
   <p>
-    {{story.title}}
+    <span>{{story.title}}</span>
 
     {{#if doneLoading }}
       {{user-estimates-for-story showStoryId=story.id}}
+    {{/if}}
+
+    {{#if story.estimatedPoints }}
+      <span class="text-muted">
+        Final Estimation: {{story.estimatedPoints}}
+      </span>
     {{/if}}
 
     {{#link-to "sprints.story" story.sprint.id story.id}}
