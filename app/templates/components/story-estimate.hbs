@@ -1,3 +1,15 @@
+<div class="well">
+  <h3>Estimate Story</h3>
+  {{#unless model.revealPoints }}
+    {{#if organizer }}
+      <div class="col-lg-12 sprint-back-button">
+        <button class="btn btn-primary pull-right" {{action "revealPoints" model.id}} >Reveal User Estimates</button>
+      </div>
+    {{/if}}
+  {{/unless}}
+</div>
+
+
 <div class="list-group" id="story-details-list-group">
   <div class="list-group-item">
 
@@ -9,8 +21,8 @@
 
         {{#unless storyEstimatted}}
           {{#if organizer}}
-            <div class="col-lg-5">
-              <form class="navbar-form navbar-left" role="final-estimate" {{action "submitFinalEstimates" on="submit"}}>
+            <div class="col-lg-10">
+              <form class="navbar-form navbar-left pull-right" role="final-estimate" {{action "submitFinalEstimates" on="submit"}}>
                 <span class="form-group">
                   {{ input type="hidden" value=storyId name="storyId" }}
                   <label> Final Estimation : </label>
@@ -32,17 +44,9 @@
 
           {{/if}}
         {{ else }}
-          <div class="text-muted col-lg-3">
-            <strong> Final Estimates : {{ model.estimatedPoints }} </strong>
+          <div class="text-muted col-lg-10">
+            <strong class="pull-right"> Final Estimates : {{ model.estimatedPoints }} </strong>
           </div>
-        {{/unless}}
-
-        {{#unless model.revealPoints }}
-          {{#if organizer }}
-            <div class="col-lg-3 pull-right">
-              <button class="btn btn-primary" {{action "revealPoints" model.id}} >Reveal User Estimates</button>
-            </div>
-          {{/if}}
         {{/unless}}
       </p>
   </div>
