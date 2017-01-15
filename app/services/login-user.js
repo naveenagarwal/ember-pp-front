@@ -9,9 +9,10 @@ export default Ember.Service.extend({
   loggedIn: false,
   loginFailed: null,
   LoggedinUser: null,
+  orgId: null,
 
   login(params, that) {
-    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
+    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId") && !!Cookies.get("orgId")){
       return true
     }
 
@@ -22,6 +23,7 @@ export default Ember.Service.extend({
         Cookies.remove("userEmail");
         Cookies.remove("userName");
         Cookies.remove("userId");
+        Cookies.remove("orgId")
         return false;
       }else{
         that.set("userEmail", data.email);
@@ -29,9 +31,11 @@ export default Ember.Service.extend({
         that.set("userId", data.name);
         that.set("loggedIn", true);
         that.set("loginFailed", false);
+        that.set("orgId", data.org_id);
         Cookies.set("userEmail", data.email);
         Cookies.set("userName", data.name);
         Cookies.set("userId", data.id);
+        Cookies.set("orgId", data.org_id);
         return true;
       }
     }, function() {
@@ -40,6 +44,7 @@ export default Ember.Service.extend({
       Cookies.remove("userEmail");
       Cookies.remove("userName");
       Cookies.remove("userId");
+      Cookies.remove("orgId");
       return false;
     });
   },

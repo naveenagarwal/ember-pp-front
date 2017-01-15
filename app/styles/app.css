@@ -37,5 +37,13 @@ body {
   margin: 0;
 }
 
+.sprint-back-button {
+  bottom: 40px;
+  padding: 0;
+}
+
+.story-back-button {
+  padding-bottom: 10px;
+}
 
 

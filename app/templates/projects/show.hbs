@@ -1,0 +1,15 @@
+<h3> {{ model.name }} - Sprints({{model.sprints.length}}) </h3>
+<ul class="list-group">
+  {{#each model.sprints as |s| }}
+    <div class="list-group-item">
+      {{#link-to "sprints.show" s.id }}
+        <h4 class="" > {{s.name}} </h4>
+      {{/link-to}}
+
+    </div>
+  {{else}}
+    <div class="list-group-item">
+      <h5> No Sprint in project </h5>
+    </div>
+  {{/each}}
+</ul>

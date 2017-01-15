@@ -10,8 +10,8 @@ export default Ember.Component.extend({
     // fetch all the stories for sprint
     // console.log(this.get('store').peekRecord('story', this.get("story").id));
     // this.set("story",this.get('store').peekRecord('story', this.get("story").id));
-    var story = this.get('store').peekRecord('story', this.get("story").id);
-    this.set("story", story);
+    // var story = this.get('store').peekRecord('story', this.get("story").id);
+    // this.set("story", story);
     this.set("doneLoading", true);
     // this.get('store').findRecord('story', this.get("story").id).then((story)=> {
     //   that.set("story", story);

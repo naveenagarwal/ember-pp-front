@@ -12,7 +12,9 @@ Router.map(function() {
     this.route('show', {path: '/:sprint_id'});
     this.route('story', {path: '/:sprint_id/story/:story_id'});
   });
-  this.route('loading');
+  this.route('projects', function() {
+    this.route('show', {path: '/:project_id' });
+  });
 });
 
 export default Router;

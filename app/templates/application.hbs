@@ -14,7 +14,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
-        {{#link-to 'sprints' tagName="li"}}<a href>Sprints</a>{{/link-to}}
+        {{#link-to 'projects' tagName="li"}}<a href>Projects</a>{{/link-to}}
+        {{!-- {{#link-to 'sprints' tagName="li"}}<a href>Sprints</a>{{/link-to}} --}}
       </ul>
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
@@ -61,5 +62,7 @@
 </nav>
 
 <div class="body">
-  {{outlet}}
+  {{#if doenLoginCheck }}
+    {{outlet}}
+  {{/if}}
 </div>
