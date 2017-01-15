@@ -1,0 +1,25 @@
+<form class="form-horizontal">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="email">Story No:</label>
+    <div class="col-sm-3">
+      {{ input type="text" value=story.storyNo placeholder="Add Story No." class="form-control" }}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="pwd">Title:</label>
+    <div class="col-sm-3">
+      {{ input type="text" value=story.title placeholder="Add Title" class="form-control" }}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="email">Description:</label>
+    <div class="col-sm-3">
+      {{ textarea value=story.description placeholder="Add Description" class="form-control" cols="80" rows="6" }}
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary" {{action "addStory" }} >Add Story</button>
+    </div>
+  </div>
+</form>

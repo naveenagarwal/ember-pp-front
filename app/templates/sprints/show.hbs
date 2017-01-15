@@ -1,7 +1,12 @@
 <h3> {{ model.name }} - Stories({{model.stories.length}}) </h3>
 
 <div class="col-lg-12 sprint-back-button">
-  {{#link-to "projects.show" model.project.id class="btn btn-primary pull-right"}} Back {{/link-to}}
+  <div class="col-lg-1 pull-right">
+    {{#link-to "sprints.new-story" model.id class="btn btn-primary pull-right"}} Add Story {{/link-to}}
+  </div>
+  <div class="col-lg-1 pull-right">
+    {{#link-to "projects.show" model.project.id class="btn btn-primary pull-right"}} Back {{/link-to}}
+  </div>
 </div>
 
 <div class="list-group">

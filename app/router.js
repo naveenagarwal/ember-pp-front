@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('sprints', { resetNamespace: true }, function() {
     this.route('show', {path: '/:sprint_id'});
     this.route('story', {path: '/:sprint_id/story/:story_id'});
+    this.route('new-story', {path: '/:sprint_id/new-sprint' });
   });
   this.route('projects', { resetNamespace: true }, function() {
     this.route('show', {path: '/:project_id' });
