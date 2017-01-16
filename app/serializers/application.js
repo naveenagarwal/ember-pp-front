@@ -6,7 +6,7 @@ export default DS.JSONAPISerializer.extend({
     var newKey = "",
         key = "";
     for(key in json.data.attributes){
-      newKey = key.replace("-", "_");
+      newKey = key.replace(/\-/g, "_");
       json.data.attributes[newKey] = json.data.attributes[key];
       if( newKey !== key ){
         delete json.data.attributes[key];

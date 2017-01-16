@@ -50,4 +50,22 @@ body {
   padding-bottom: 10px;
 }
 
+.btn-custom {
+  background: #3e3e3e;
+  background: -moz-linear-gradient(top,  #616161 0%, #777777 50%, #3b3b3b 51%, #393939 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#616161), color-stop(50%,#777777), color-stop(51%,#3b3b3b), color-stop(100%,#393939));
+  background: -webkit-linear-gradient(top,  #616161 0%,#777777 50%,#3b3b3b 51%,#393939 100%);
+  background: -o-linear-gradient(top,  #616161 0%,#777777 50%,#3b3b3b 51%,#393939 100%);
+  background: -ms-linear-gradient(top,  #616161 0%,#777777 50%,#3b3b3b 51%,#393939 100%);
+  background: linear-gradient(to bottom,  #616161 0%,#777777 50%,#3b3b3b 51%,#393939 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#616161', endColorstr='#393939',GradientType=0 );
+  border-radius: 6px;
+  color: white;
+  min-width: 100px;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  line-height: initial;
+}
+
 

@@ -16,6 +16,7 @@ Router.map(function() {
   this.route('projects', { resetNamespace: true }, function() {
     this.route('show', {path: '/:project_id' });
     this.route('new-sprint', {path: '/:project_id/new-sprint' });
+    this.route('new');
   });
 });
 

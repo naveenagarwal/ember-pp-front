@@ -56,8 +56,10 @@ export default Ember.Component.extend({
     if(!!data.name || !!data.estimatedPoints || !!data.usersEstimates){
       var usersEstimates = [];
       if(data.reload){
+        console.log("reload data");
         usersEstimates = data.usersEstimates;
       }else{
+        console.log("pushing data");
         usersEstimates = this.get("usersEstimates");
         usersEstimates.push({
           name: data.name,
@@ -65,6 +67,7 @@ export default Ember.Component.extend({
         });
       }
 
+      console.log("updating user data");
       this.propertyWillChange("usersEstimates");
       this.set("usersEstimates", usersEstimates);
       this.propertyDidChange("usersEstimates");
@@ -90,30 +93,14 @@ export default Ember.Component.extend({
 
     var that = this;
     var story = this.get('store').peekRecord('story', this.get("storyId"));
-    story.get('storyPoints').then((storyPoints) => {
-      storyPoints.map(function(storyPoint){
-        storyPoint.get('user').then((user) => {
-          if(user.get("id") === Cookies.get("userId")){
-            that.set("estimateSubmitted", true);
-            that.set("userEstimate", storyPoint.get("estimatedPoints"));
-            return false;
-          }
-        });
-      });
-    });
+
+    // fixing storypoints and user relation
 
 
-    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
-      this.set("loggedIn", true);
-      var user = this.get('store').peekRecord("user", Cookies.get("userId"));
-      this.set("organizer", user.get("role") === "organizer");
-      this.set("participant", user.get("role") === "participant");
-    }
-
-    // find others estimates
-    story.get('storyPoints').then((storyPoints) => {
+    this.get("store").query("story-point", {filter: {story_id: story.get("id") }}).then((storyPoints) => {
       var usersEstimates = [];
-      storyPoints.map(function (storyPoint) {
+      storyPoints.map(function(storyPoint){
+        var user = storyPoint.get('user');
 
         var value;
         if(story.get("revealPoints")){
@@ -127,13 +114,28 @@ export default Ember.Component.extend({
           estimatedPoints: value
         });
 
+        storyPoint.get('user').then((user) => {
+          if(user.get("id") === Cookies.get("userId")){
+            that.set("estimateSubmitted", true);
+            that.set("userEstimate", storyPoint.get("estimatedPoints"));
+            return false;
+          }
+        });
       });
+
       that.set("usersEstimates", usersEstimates);
       if(usersEstimates.length > 0){
         that.set("otherEstimatesAvailable", true);
       }
 
     });
+
+    if(!!Cookies.get("userEmail") && !!Cookies.get("userName") && !!Cookies.get("userId")){
+      this.set("loggedIn", true);
+      var user = this.get('store').peekRecord("user", Cookies.get("userId"));
+      this.set("organizer", user.get("role") === "organizer");
+      this.set("participant", user.get("role") === "participant");
+    }
 
     if(!!story.get("estimatedPoints")){
       this.set("storyEstimatted", true);

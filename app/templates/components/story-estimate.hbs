@@ -93,7 +93,7 @@
     </div>
   {{/if}}
 
-  {{#unless}}
+  {{#unless estimateSubmitted}}
     <form class="navbar-form navbar-left" role="estimate" {{action "submitEstimate" on="submit"}}>
       <div class="form-group">
         {{ input type="hidden" value=storyId name="storyId" }}
