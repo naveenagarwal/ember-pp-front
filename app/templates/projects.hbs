@@ -2,23 +2,13 @@
   <div class="row">
     <div class="col-sm-3 col-lg-2">
       <nav class="navbar navbar-inverse navbar-fixed-side">
-        {{!-- <ul class="list-group">
-          <li class="list-group-item">
-              {{#link-to 'projects.new' class="btn btn-primary" }} Add Project {{/link-to}}
-            </li>
-          {{#each model as |p|}}
-            <li class="list-group-item">
-              {{#link-to 'projects.show' p.id }} {{p.name}} {{/link-to}}
-            </li>
-          {{/each}}
-        </ul> --}}
         <ul class="nav nav-pills nav-stacked">
           <li role="presentation">
             {{#link-to 'projects.new' class="btn btn-primary" }} Add Project {{/link-to}}
           </li>
           {{#each model as |p|}}
             <li role="presentation">
-              {{#link-to 'projects.show' p.id }} {{p.name}} {{/link-to}}
+              {{#link-to 'projects.show' p.id}} {{p.name}} {{/link-to}}
             </li>
           {{/each}}
         </ul>

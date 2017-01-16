@@ -34,6 +34,7 @@ export default Ember.Component.extend({
     this.set("channel", this.get("store").peekRecord("story", this.get("storyId")).get("storyNo"));
     socket.on(this.get("channel"), this.onMessage, this );
     this.set("socketRef", socket);
+    this.set("usersEstimates", []);
 
   },
 
@@ -77,6 +78,7 @@ export default Ember.Component.extend({
       }
     }
 
+    console.log("Final estimates");
     if(!!data.finalEstimates){
       this.propertyWillChange("model");
       this.get("model").set("estimatedPoints", data.finalEstimates);
@@ -192,7 +194,7 @@ export default Ember.Component.extend({
       this.get("store").findRecord('story', id).then((story) => {
         story.set("revealPoints", true);
         story.save().then((story) => {
-          this.set("revealPoints", true);
+          that.set("revealPoints", true);
           console.log("revealing points");
           story.get("storyPoints").then((storyPoints) => {
             var usersEstimates = [];
