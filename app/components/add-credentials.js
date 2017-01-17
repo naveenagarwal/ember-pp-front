@@ -13,14 +13,12 @@ export default Ember.Component.extend({
         return false;
       }
 
-      // var url = "https://pure-brook-26366.herokuapp.com/users/" + Cookies.get("userId") + "/add_credentials/"
       var url =  ENV.apiURL + "/" + Cookies.get("userId") + "/add_credentials/"
       var that = this;
       $.ajax({
         url: url,
         method: "PATCH",
         data: {jira: params},
-        // contentType: "application/json; charset=utf-8"
         dataType: "json",
         success: function(data){
           if(data.success){

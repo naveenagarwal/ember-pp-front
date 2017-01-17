@@ -68,4 +68,7 @@ body {
   line-height: initial;
 }
 
+.story-estimate button {
+  margin-left: 10px;
+}
 

@@ -22,9 +22,6 @@ export default Ember.Component.extend({
     /*
       2. The next step you need to do is to create your actual socketIO.
     */
-    console.log(ENV.socketURL, "push server url");
-    // const socket = this.get('socketIOService').socketFor('https://powerful-waters-36730.herokuapp.com/');
-    // const socket = this.get('socketIOService').socketFor('http://localhost:7000/');
     const socket = this.get('socketIOService').socketFor(ENV.socketURL);
 
     /*
@@ -84,11 +81,34 @@ export default Ember.Component.extend({
 
     console.log("Final estimates");
     if(!!data.finalEstimates){
+      console.log(data.finalEstimates);
       this.propertyWillChange("model");
       this.get("model").set("estimatedPoints", data.finalEstimates);
       this.propertyDidChange("model");
       this.set("storyEstimatted", true);
     }
+
+    if(!!data.reset){
+      console.log("reseting story estimates");
+      var story = this.get('store').peekRecord('story', this.get("storyId"));
+      story.set("revealPoints", false);
+      this.set("revealPoints", false);
+
+      this.propertyWillChange("model");
+      this.get("model").set("revealPoints", false);
+      this.get("model").set("reset", false);
+      this.propertyDidChange("model");
+
+      this.propertyWillChange("usersEstimates");
+      this.set("usersEstimates", []);
+      this.propertyDidChange("usersEstimates");
+
+      this.set("estimateSubmitted", false);
+      this.set("storyEstimatted", false);
+
+      console.log(this);
+    }
+
   },
 
   init() {
@@ -228,6 +248,20 @@ export default Ember.Component.extend({
       });
     },
 
+    reset(id){
+
+      var that = this;
+      this.get("store").findRecord('story', id).then((story) => {
+        story.set("revealPoints", false);
+        story.set("reset", true);
+        story.set("estimatedPoints", null);
+        story.save().then((story) => {
+          var socket = that.get("socketRef");
+          socket.send({ channel: that.get("channel"), reset: true });
+        }.bind(this));
+      }.bind(this));
+    },
+
     estimate(value) {
       this.set("userEstimate", value);
     },
@@ -243,7 +277,7 @@ export default Ember.Component.extend({
       var that = this;
 
       var story = this.get('store').peekRecord('story', storyId);
-      // this.get('store').findRecord('user', {id: Cookies.get("userId"), "story_id": storyId}).then(function(user){
+
       var user = this.get('store').peekRecord('user', Cookies.get("userId"));
       var params =  {
           story: story,
