@@ -3,9 +3,9 @@
   <div class="col-lg-12 sprint-back-button story-estimate">
     {{#if organizer }}
       {{#unless model.revealPoints }}
-        <button class="btn btn-primary pull-right" {{action "revealPoints" model.id}} >Reveal User Estimates</button>
+        <button class="btn btn-success pull-right" {{action "revealPoints" model.id}} >Reveal User Estimates</button>
       {{/unless}}
-      <button class="btn btn-primary pull-right" {{action "reset" model.id}} >Reset</button>
+      <button class="btn btn-warning pull-right" {{action "reset" model.id}} >Reset</button>
     {{/if}}
   </div>
 </div>
