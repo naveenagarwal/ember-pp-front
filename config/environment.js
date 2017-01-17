@@ -30,6 +30,8 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.apiURL = "http://localhost:4000"
+    ENV.socketURL = "http://localhost:7000"
   }
 
   if (environment === 'test') {
@@ -44,7 +46,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-
+    ENV.apiURL = "https://pure-brook-26366.herokuapp.com"
+    ENV.socketURL = "https://powerful-waters-36730.herokuapp.com"
   }
 
   return ENV;

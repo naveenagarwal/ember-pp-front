@@ -25,9 +25,21 @@
         <button type="submit" class="btn btn-default">Search</button>
       </form>
       {{#if userName }}
-        <div class="has-success col-sm-3 pull-right">
-            <span class="help-block col-sm-7">Welcome {{userName}}!</span>
-          <button {{action "logout"}} class="btn btn-danger col-sm-5"> Logout </button>
+        <div class="has-success col-sm-2 pull-right">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><span class="help-block text-center">Welcome {{userName}}!</span></li>
+                <li> {{#link-to "add-jira-details" }} Add JIRA credentials {{/link-to}} </li>
+
+                <li role="separator" class="divider"></li>
+                <li><button {{action "logout"}} class="center-block btn btn-danger"> Logout </button></li>
+
+              </ul>
+            </li>
+          </ul>
+
         </div>
       {{else}}
         <form class="navbar-form navbar-left" role="login" {{action "login" on="submit"}}>
@@ -46,18 +58,7 @@
       {{/if}}
 
 
-      {{!-- <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul> --}}
+
     </div><!-- /.navbar-collapse -->
   </div>
 </nav>

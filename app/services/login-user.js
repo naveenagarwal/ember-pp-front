@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import ENV from 'pp-front/config/environment';
 
 export default Ember.Service.extend({
   store: Ember.inject.service(),
@@ -16,7 +17,9 @@ export default Ember.Service.extend({
       return true
     }
 
-    Ember.$.post("http://localhost:4000/login", params).then(function(data) {
+    var url = ENV.apiURL + "/login";
+
+    Ember.$.post(url, params).then(function(data) {
       if(data.success === false){
         that.set("loginFailed", true);
         that.set("loggedIn", false);

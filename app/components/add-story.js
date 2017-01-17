@@ -30,7 +30,7 @@ export default Ember.Component.extend({
 
       story.save().then(function(){
         sprint.get("stories").pushObject(story);
-        this.set("story", {});
+        this.set("story", { fetchFromJira: false });
         this.get('router').transitionTo('sprints.show', sprint.get("id"));
       }.bind(this));
 

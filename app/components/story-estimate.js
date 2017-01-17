@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import ENV from 'pp-front/config/environment';
 
 export default Ember.Component.extend({
   session: Ember.inject.service("login-user"),
@@ -21,7 +22,10 @@ export default Ember.Component.extend({
     /*
       2. The next step you need to do is to create your actual socketIO.
     */
-    const socket = this.get('socketIOService').socketFor('http://localhost:7000/');
+    console.log(ENV.socketURL, "push server url");
+    // const socket = this.get('socketIOService').socketFor('https://powerful-waters-36730.herokuapp.com/');
+    // const socket = this.get('socketIOService').socketFor('http://localhost:7000/');
+    const socket = this.get('socketIOService').socketFor(ENV.socketURL);
 
     /*
     * 3. Define any event handlers
@@ -196,7 +200,7 @@ export default Ember.Component.extend({
         story.save().then((story) => {
           that.set("revealPoints", true);
           console.log("revealing points");
-          story.get("storyPoints").then((storyPoints) => {
+          this.get("store").query("story-point", {filter: {story_id: story.get("id") }}).then((storyPoints) => {
             var usersEstimates = [];
             storyPoints.map(function (storyPoint) {
 

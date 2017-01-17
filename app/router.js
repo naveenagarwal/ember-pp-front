@@ -18,6 +18,7 @@ Router.map(function() {
     this.route('new-sprint', {path: '/:project_id/new-sprint' });
     this.route('new');
   });
+  this.route('add-jira-details');
 });
 
 export default Router;
