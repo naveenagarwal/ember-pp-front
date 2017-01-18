@@ -1,0 +1,9 @@
+<h3 class="text-muted">
+  {{#if loggedIn }}
+    For now Go to {{#link-to "projects" class="btn btn-success"}} Projects {{/link-to}}
+    or Add/Update your {{#link-to "add-jira-details" class="btn btn-primary"}} Jira Credentials {{/link-to}}
+  {{else}}
+    For now {{#link-to "sign-up" class="btn btn-primary"}} Sign up {{/link-to}}
+  {{/if}}
+</h3>
+

@@ -19,6 +19,7 @@ Router.map(function() {
     this.route('new');
   });
   this.route('add-jira-details');
+  this.route('sign-up');
 });
 
 export default Router;
