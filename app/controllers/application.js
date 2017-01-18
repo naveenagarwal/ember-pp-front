@@ -41,7 +41,16 @@ export default Ember.Controller.extend({
       var params = {
         email: this.get("email")
       }
-      this.get('session').login(params, this);
+      var that = this;
+      this.get('session').login(params, this).then((data) => {
+        if(data === false){
+          that.set("loginFailed", true);
+          that.set("loggedIn", false);
+        }else{
+          that.set("loginFailed", false);
+          that.set("loggedIn", true);
+        }
+      });
     },
 
     logout() {
@@ -55,7 +64,8 @@ export default Ember.Controller.extend({
       Cookies.remove("userName");
       Cookies.remove("userEmail");
       Cookies.remove("userId");
-      Cookies.remove("orgId")
+      Cookies.remove("orgId");
+      window.location = "/";
     }
 
   }

@@ -18,8 +18,10 @@ export default Ember.Service.extend({
     }
 
     var url = ENV.apiURL + "/login";
+    var that = this;
 
-    Ember.$.post(url, params).then(function(data) {
+    return Ember.$.post(url, params).then(function(data) {
+      console.log(data);
       if(data.success === false){
         that.set("loginFailed", true);
         that.set("loggedIn", false);
@@ -39,6 +41,8 @@ export default Ember.Service.extend({
         Cookies.set("userName", data.name);
         Cookies.set("userId", data.id);
         Cookies.set("orgId", data.org_id);
+        // that.get("router").transitionTo("projects");
+        window.location = "/";
         return true;
       }
     }, function() {
