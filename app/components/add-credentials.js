@@ -13,7 +13,7 @@ export default Ember.Component.extend({
         return false;
       }
 
-      var url =  ENV.apiURL + "/" + Cookies.get("userId") + "/add_credentials/"
+      var url =  ENV.apiURL + "/users/" + Cookies.get("userId") + "/add_credentials/"
       var that = this;
       $.ajax({
         url: url,

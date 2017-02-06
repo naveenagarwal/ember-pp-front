@@ -18,9 +18,7 @@ loadInitializers(App, config.modulePrefix);
 export default App;
 
 $(document).on('ajaxSend', function(e, request, options) {
-    if (options.type == "POST" || options.type == "PUT" || options.type == "PATCH") {
-      request.setRequestHeader('user_id', Cookies.get("userId"));
-    }
+    request.setRequestHeader('user_id', Cookies.get("userId"));
 
     $("div.body").hide();
     if($('div.loader').length < 1){
